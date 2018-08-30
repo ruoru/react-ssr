@@ -11,7 +11,8 @@ module.exports = env => {
   return {
     entry: {
       main: './src/main.js',
-      users: './src/containers/Users/index.js'
+      users: './src/containers/Users/index.js',
+      login: './src/containers/Login/index.js'
     },
 
     output: {

@@ -1,25 +1,35 @@
-require('babel-core/register')()
-
 require('babel-polyfill');
 
 const Koa = require('koa');
+const KoaViews = require('koa-views');
 const React = require('react');
 const { renderToString } = require('react-dom/server');
-const views = 'koa-views';
-const app = new Koa();
+const path = require('path');
+
 const PORT = 8200;
+const app = new Koa();
 
+app.set('view engine', {
+  map: { html: 'ejs' }
+});
 
-app.use(require('koa-static')(__dirname + '/dist'))
-// 将ejs设置为我们的模板引擎
-app.use(views(path.resolve(__dirname, './public'), { map: { html: 'ejs' } }))
+app.use(KoaViews(path.resolve(__dirname, './view'), {
+  extension: 'ejs',
+}));
 
-// response
+app.use(async (ctx) => {
+  let title = 'hello koa2'
+  await ctx.render('index', {
+    title,
+  })
+});
+
+app.use(require('koa-static')(__dirname + '/dist'));
+
 app.use(ctx => {
-  let stringHTML = renderToString(require('./src/containers/Users/index.js'));
-
+  let stringHTML = renderToString(require('./src/containers/Login/index.js'));
   ctx.body = stringHTML;
-})
+});
 
 app.listen(PORT, () => {
   console.log('listening on port ' + PORT);
