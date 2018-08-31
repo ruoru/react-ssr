@@ -8,7 +8,7 @@ react-route-dom: 4
 
 ## need help
 
-step1: not run build, beacuse my index.ejs build faile;
+step1: run `npm install`, not run build, beacuse my index.ejs build faile;
 
 step2: you can run this script with spa run;
 ```
