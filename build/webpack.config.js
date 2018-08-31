@@ -11,7 +11,6 @@ module.exports = env => {
   return {
     entry: {
       main: './src/main.js',
-      users: './src/containers/Users/index.js',
       login: './src/containers/Login/index.js'
     },
 
@@ -89,6 +88,15 @@ module.exports = env => {
       new HtmlWebpackPlugin({
         template: './public/index.html',
         filename: 'index.html',
+        inject: false,    // 打包之后js放置在那里 body header false不引入打包后的js
+        chunks: ['main'],
+        title: `${environment.title}`,
+        publicURL: '//assert.ruoru.me',
+      }),
+
+      new HtmlWebpackPlugin({
+        template: './public/index.ejs',
+        filename: 'index.ejs',
         inject: false,    // 打包之后js放置在那里 body header false不引入打包后的js
         chunks: ['main'],
         title: `${environment.title}`,

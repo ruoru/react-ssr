@@ -1,34 +1,38 @@
-require('babel-polyfill');
+require('@babel/register')()
+require('babel-polyfill')
 
 const Koa = require('koa');
 const KoaViews = require('koa-views');
+const KoaStatic = require('koa-static')
 const React = require('react');
-const { renderToString } = require('react-dom/server');
-const path = require('path');
+const ReactDOMServer = require('react-dom/server');
+const { resolve } = require('path');
+
+const Login = require('./src/containers/Login/index.js');
+const login_build = require('./dist/login-v0.0.0.js');
+const Users = require('./src/containers/Users/index.js');
 
 const PORT = 8200;
+
 const app = new Koa();
-
-app.set('view engine', {
-  map: { html: 'ejs' }
-});
-
-app.use(KoaViews(path.resolve(__dirname, './view'), {
+app.use(KoaStatic(resolve(__dirname, './dist')));
+app.use(KoaViews(resolve(__dirname, './dist'), {
   extension: 'ejs',
+  //map: { html: 'ejs' }
 }));
 
-app.use(async (ctx) => {
-  let title = 'hello koa2'
+// app.use(async (ctx) => {
+//   let title = 'hello koa2'
+//   await ctx.render('index', {
+//     title,
+//   })
+// });
+
+app.use(async ctx => {
+  let stringHTML = ReactDOMServer.renderToString(require('./dist/login-v0.0.0.js'));
   await ctx.render('index', {
-    title,
+    main: stringHTML
   })
-});
-
-app.use(require('koa-static')(__dirname + '/dist'));
-
-app.use(ctx => {
-  let stringHTML = renderToString(require('./src/containers/Login/index.js'));
-  ctx.body = stringHTML;
 });
 
 app.listen(PORT, () => {

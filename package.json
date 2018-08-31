@@ -47,6 +47,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.0",
     "babel-plugin-import": "^1.7.0",
     "css-loader": "^0.28.11",
